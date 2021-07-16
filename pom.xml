@@ -8,7 +8,7 @@
     
     <name>EpicSpawners ShopGUIPlus Hook</name>
     <description>A plugin that adds support for EpicSpawners spawners to ShopGUIPlus.</description>
-    <url>https://www.sirblobman.xyz/</url>
+    <url>https://www.spigotmc.org/resources/94355/</url>
     
     <properties>
         <java.version>1.8</java.version>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>net.brcdev</groupId>
             <artifactId>ShopGUIPlus</artifactId>
-            <version>1.61.0</version>
+            <version>1.62.2</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
