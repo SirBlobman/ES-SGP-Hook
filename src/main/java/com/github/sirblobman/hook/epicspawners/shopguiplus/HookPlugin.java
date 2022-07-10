@@ -31,7 +31,9 @@ public final class HookPlugin extends JavaPlugin {
     private boolean checkMissingHook(String pluginName) {
         PluginManager manager = Bukkit.getPluginManager();
         Plugin plugin = manager.getPlugin(pluginName);
-        if(plugin == null || !plugin.isEnabled()) return true;
+        if(plugin == null || !plugin.isEnabled()) {
+            return true;
+        }
 
         PluginDescriptionFile description = plugin.getDescription();
         String fullName = description.getFullName();
