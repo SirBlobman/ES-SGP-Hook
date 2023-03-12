@@ -34,59 +34,59 @@ public final class HookProvider implements ExternalSpawnerProvider {
     private EpicSpawners getEpicSpawners() {
         return this.epicSpawners;
     }
-    
+
     public void register() {
         try {
             ShopGuiPlusApi.registerSpawnerProvider(this);
-        } catch(ExternalSpawnerProviderNameConflictException ex) {
+        } catch (ExternalSpawnerProviderNameConflictException ex) {
             Logger logger = getPlugin().getLogger();
             logger.log(Level.WARNING, "A spawner provider is already registered for EpicSpawners.");
         }
     }
-    
+
     @Override
     public String getName() {
         HookPlugin plugin = getPlugin();
         PluginDescriptionFile description = plugin.getDescription();
         return description.getPrefix();
     }
-    
+
     @Override
     public ItemStack getSpawnerItem(EntityType entityType) {
-        if(entityType == null) {
+        if (entityType == null) {
             return null;
         }
 
         EpicSpawners epicSpawners = getEpicSpawners();
         SpawnerManager spawnerManager = epicSpawners.getSpawnerManager();
         SpawnerData spawnerData = spawnerManager.getSpawnerData(entityType);
-        if(spawnerData == null) {
+        if (spawnerData == null) {
             return null;
         }
 
         SpawnerTier firstTier = spawnerData.getFirstTier();
-        if(firstTier == null) {
+        if (firstTier == null) {
             return null;
         }
 
         return firstTier.toItemStack(1, 1);
     }
-    
+
     @Override
     public EntityType getSpawnerEntityType(ItemStack item) {
-        if(item == null) {
+        if (item == null) {
             return null;
         }
 
         EpicSpawners epicSpawners = getEpicSpawners();
         SpawnerManager spawnerManager = epicSpawners.getSpawnerManager();
         SpawnerTier spawnerTier = spawnerManager.getSpawnerTier(item);
-        if(spawnerTier == null) {
+        if (spawnerTier == null) {
             return null;
         }
 
         List<EntityType> entityTypeList = spawnerTier.getEntities();
-        if(entityTypeList.isEmpty()) {
+        if (entityTypeList.isEmpty()) {
             return null;
         }
 
