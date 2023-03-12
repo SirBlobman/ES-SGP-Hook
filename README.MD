@@ -2,6 +2,19 @@
 This plugin adds support for spawners from the EpicSpawners plugin into ShopGUIPlus.
 
 ## Requirements
-- [Spigot](https://www.spigotmc.org/) 1.8.8, 1.12.2, 1.16.5, 1.18.2, or 1.19.3
-- [ShopGUIPlus](https://www.spigotmc.org/resources/6515/) 1.81.1 or higher.
-- [EpicSpawners](https://songoda.com/marketplace/product/13) 7.3.0 or higher.
+- [SpigotMC](https://www.spigotmc.org/) or [PaperMC](https://papermc.io/) 1.8.8-1.19.3
+- [ShopGUIPlus](https://www.spigotmc.org/resources/6515/) 1.78.0 or higher.
+- [EpicSpawners](https://songoda.com/marketplace/product/13) 7.1.2 or higher.
+
+## How to compile?
+To compile this project, use the gradle wrapper:
+
+### Unix
+```shell
+./gradlew build
+```
+
+### Windows
+```shell
+gradlew.bat build
+```
