@@ -2,6 +2,8 @@ package com.github.sirblobman.hook.epicspawners.shopguiplus;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +15,7 @@ import com.songoda.epicspawners.spawners.spawner.SpawnerData;
 import com.songoda.epicspawners.spawners.spawner.SpawnerManager;
 import com.songoda.epicspawners.spawners.spawner.SpawnerTier;
 import net.brcdev.shopgui.ShopGuiPlusApi;
+import net.brcdev.shopgui.exception.api.ExternalSpawnerProviderNameConflictException;
 import net.brcdev.shopgui.spawner.external.provider.ExternalSpawnerProvider;
 
 public final class HookProvider implements ExternalSpawnerProvider {
@@ -23,14 +26,28 @@ public final class HookProvider implements ExternalSpawnerProvider {
         this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
         this.epicSpawners = JavaPlugin.getPlugin(EpicSpawners.class);
     }
+
+    private HookPlugin getPlugin() {
+        return this.plugin;
+    }
+
+    private EpicSpawners getEpicSpawners() {
+        return this.epicSpawners;
+    }
     
     public void register() {
-        ShopGuiPlusApi.registerSpawnerProvider(this);
+        try {
+            ShopGuiPlusApi.registerSpawnerProvider(this);
+        } catch(ExternalSpawnerProviderNameConflictException ex) {
+            Logger logger = getPlugin().getLogger();
+            logger.log(Level.WARNING, "A spawner provider is already registered for EpicSpawners.");
+        }
     }
     
     @Override
     public String getName() {
-        PluginDescriptionFile description = this.plugin.getDescription();
+        HookPlugin plugin = getPlugin();
+        PluginDescriptionFile description = plugin.getDescription();
         return description.getPrefix();
     }
     
@@ -40,7 +57,8 @@ public final class HookProvider implements ExternalSpawnerProvider {
             return null;
         }
 
-        SpawnerManager spawnerManager = this.epicSpawners.getSpawnerManager();
+        EpicSpawners epicSpawners = getEpicSpawners();
+        SpawnerManager spawnerManager = epicSpawners.getSpawnerManager();
         SpawnerData spawnerData = spawnerManager.getSpawnerData(entityType);
         if(spawnerData == null) {
             return null;
@@ -60,7 +78,8 @@ public final class HookProvider implements ExternalSpawnerProvider {
             return null;
         }
 
-        SpawnerManager spawnerManager = this.epicSpawners.getSpawnerManager();
+        EpicSpawners epicSpawners = getEpicSpawners();
+        SpawnerManager spawnerManager = epicSpawners.getSpawnerManager();
         SpawnerTier spawnerTier = spawnerManager.getSpawnerTier(item);
         if(spawnerTier == null) {
             return null;
