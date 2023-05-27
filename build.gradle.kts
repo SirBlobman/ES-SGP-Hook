@@ -1,13 +1,43 @@
-val baseVersion = findProperty("version.base") ?: "invalid"
-val betaString = ((findProperty("version.beta") ?: "false") as String)
-val jenkinsBuildNumber = System.getenv("BUILD_NUMBER") ?: "Unofficial"
+val mavenUsername = fetchEnv("MAVEN_DEPLOY_USR", "mavenUsernameSirBlobman", "")
+val mavenPassword = fetchEnv("MAVEN_DEPLOY_PSW", "mavenPasswordSirBlobman", "")
+
+val baseVersion = fetchProperty("version.base", "invalid")
+val betaString = fetchProperty("version.beta", "false")
+val jenkinsBuildNumber = fetchEnv("BUILD_NUMBER", null, "Unofficial")
 
 val betaBoolean = betaString.toBoolean()
 val betaVersion = if (betaBoolean) "Beta-" else ""
-val calculatedVersion = "$baseVersion.$betaVersion$jenkinsBuildNumber"
+version = "$baseVersion.$betaVersion$jenkinsBuildNumber"
+
+fun fetchProperty(propertyName: String, defaultValue: String): String {
+    val found = findProperty(propertyName)
+    if (found != null) {
+        return found.toString()
+    }
+
+    return defaultValue
+}
+
+fun fetchEnv(envName: String, propertyName: String?, defaultValue: String): String {
+    val found = System.getenv(envName)
+    if (found != null) {
+        return found
+    }
+
+    if (propertyName != null) {
+        return fetchProperty(propertyName, defaultValue)
+    }
+
+    return defaultValue
+}
 
 plugins {
     id("java")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 repositories {
@@ -15,7 +45,13 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://nexus.sirblobman.xyz/proxy-jitpack/")
-    maven("https://repo.songoda.com/repository/public/")
+
+    maven("https://nexus.sirblobman.xyz/private/") {
+        credentials {
+            username = mavenUsername
+            password = mavenPassword
+        }
+    }
 }
 
 dependencies {
@@ -25,26 +61,20 @@ dependencies {
 
     // Plugin Dependencies
     compileOnly("com.github.brcdev-minecraft:shopgui-api:3.0.0") // ShopGUIPlus API
-    compileOnly("com.songoda:EpicSpawners:7.1.2") // EpicSpawners
+    compileOnly("com.songoda:EpicSpawners:7.3.3") // EpicSpawners
 }
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
 
 tasks {
     named<Jar>("jar") {
-        archiveFileName.set("ES-SGP-Hook-$calculatedVersion.jar")
+        archiveBaseName.set("ES-SGP-Hook")
     }
 
     processResources {
-        val pluginName = (findProperty("bukkit.plugin.name") ?: "") as String
-        val pluginPrefix = (findProperty("bukkit.plugin.prefix") ?: "") as String
-        val pluginDescription = (findProperty("bukkit.plugin.description") ?: "") as String
-        val pluginWebsite = (findProperty("bukkit.plugin.website") ?: "") as String
-        val pluginMainClass = (findProperty("bukkit.plugin.main") ?: "") as String
+        val pluginName = fetchProperty("bukkit.plugin.name", "")
+        val pluginPrefix = fetchProperty("bukkit.plugin.prefix", "")
+        val pluginDescription = fetchProperty("bukkit.plugin.description", "")
+        val pluginWebsite = fetchProperty("bukkit.plugin.website", "")
+        val pluginMainClass = fetchProperty("bukkit.plugin.main", "")
 
         filesMatching("plugin.yml") {
             expand(
@@ -54,7 +84,7 @@ tasks {
                     "pluginDescription" to pluginDescription,
                     "pluginWebsite" to pluginWebsite,
                     "pluginMainClass" to pluginMainClass,
-                    "pluginVersion" to calculatedVersion
+                    "pluginVersion" to version
                 )
             )
         }

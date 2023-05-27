@@ -1,9 +1,10 @@
 package com.github.sirblobman.hook.epicspawners.shopguiplus;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -22,37 +23,43 @@ public final class HookProvider implements ExternalSpawnerProvider {
     private final HookPlugin plugin;
     private final EpicSpawners epicSpawners;
 
-    public HookProvider(HookPlugin plugin) {
-        this.plugin = Objects.requireNonNull(plugin, "plugin must not be null!");
+    public HookProvider(@NotNull HookPlugin plugin) {
+        this.plugin = plugin;
         this.epicSpawners = JavaPlugin.getPlugin(EpicSpawners.class);
     }
 
-    private HookPlugin getPlugin() {
+    private @NotNull HookPlugin getPlugin() {
         return this.plugin;
     }
 
-    private EpicSpawners getEpicSpawners() {
+    private @NotNull EpicSpawners getEpicSpawners() {
         return this.epicSpawners;
+    }
+
+    private @NotNull Logger getLogger() {
+        HookPlugin plugin = getPlugin();
+        return plugin.getLogger();
     }
 
     public void register() {
         try {
             ShopGuiPlusApi.registerSpawnerProvider(this);
         } catch (ExternalSpawnerProviderNameConflictException ex) {
-            Logger logger = getPlugin().getLogger();
-            logger.log(Level.WARNING, "A spawner provider is already registered for EpicSpawners.");
+            Logger logger = getLogger();
+            logger.warning("A spawner provider is already registered for EpicSpawners.");
         }
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         HookPlugin plugin = getPlugin();
         PluginDescriptionFile description = plugin.getDescription();
-        return description.getPrefix();
+        String prefix = description.getPrefix();
+        return (prefix != null ? prefix : plugin.getName());
     }
 
     @Override
-    public ItemStack getSpawnerItem(EntityType entityType) {
+    public @Nullable ItemStack getSpawnerItem(@Nullable EntityType entityType) {
         if (entityType == null) {
             return null;
         }
@@ -73,7 +80,7 @@ public final class HookProvider implements ExternalSpawnerProvider {
     }
 
     @Override
-    public EntityType getSpawnerEntityType(ItemStack item) {
+    public @Nullable EntityType getSpawnerEntityType(@Nullable ItemStack item) {
         if (item == null) {
             return null;
         }

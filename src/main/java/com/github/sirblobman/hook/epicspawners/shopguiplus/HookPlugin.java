@@ -18,7 +18,6 @@ public final class HookPlugin extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPostEnable(ShopGUIPlusPostEnableEvent e) {
-        HookProvider hookProvider = new HookProvider(this);
-        hookProvider.register();
+        new HookProvider(this).register();
     }
 }
