@@ -11,5 +11,5 @@ authors:
   - "SirBlobman"
 
 depend:
-  - "ShopGUIPlus"
   - "EpicSpawners"
+  - "ShopGUIPlus"

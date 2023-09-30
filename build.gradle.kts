@@ -1,6 +1,3 @@
-val mavenUsername = fetchEnv("MAVEN_DEPLOY_USR", "mavenUsernameSirBlobman", "")
-val mavenPassword = fetchEnv("MAVEN_DEPLOY_PSW", "mavenPasswordSirBlobman", "")
-
 val baseVersion = fetchProperty("version.base", "invalid")
 val betaString = fetchProperty("version.beta", "false")
 val jenkinsBuildNumber = fetchEnv("BUILD_NUMBER", null, "Unofficial")
@@ -41,27 +38,22 @@ java {
 }
 
 repositories {
-    mavenCentral()
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
-    maven("https://nexus.sirblobman.xyz/proxy-jitpack/")
+    mavenCentral() // Maven Central
 
-    maven("https://nexus.sirblobman.xyz/private/") {
-        credentials {
-            username = mavenUsername
-            password = mavenPassword
-        }
-    }
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // SpigotMC Repository
+    maven("https://oss.sonatype.org/content/repositories/snapshots/") // OSS Sonatype Snapshots
+    maven("https://repo.craftaro.com/repository/minecraft-plugins/") // Craftaro Repository
+    maven("https://nexus.sirblobman.xyz/proxy-jitpack/") // JitPack Proxy
 }
 
 dependencies {
     // Java Dependencies
-    compileOnly("org.jetbrains:annotations:24.0.1")
-    compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:24.0.1") // JetBrains Annotations
+    compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT") // Spigot API
 
     // Plugin Dependencies
+    compileOnly("com.craftaro:EpicSpawners-API:1.0.0-SNAPSHOT") // EpicSpawners API
     compileOnly("com.github.brcdev-minecraft:shopgui-api:3.0.0") // ShopGUIPlus API
-    compileOnly("com.songoda:EpicSpawners:7.3.3") // EpicSpawners
 }
 
 tasks {
