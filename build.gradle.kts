@@ -42,13 +42,13 @@ repositories {
 
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // SpigotMC Repository
     maven("https://oss.sonatype.org/content/repositories/snapshots/") // OSS Sonatype Snapshots
-    maven("https://repo.craftaro.com/repository/minecraft-plugins/") // Craftaro Repository
+    maven("https://repo.songoda.com/repository/minecraft-plugins/") // Songoda Repository
     maven("https://nexus.sirblobman.xyz/proxy-jitpack/") // JitPack Proxy
 }
 
 dependencies {
     // Java Dependencies
-    compileOnly("org.jetbrains:annotations:24.0.1") // JetBrains Annotations
+    compileOnly("org.jetbrains:annotations:24.1.0") // JetBrains Annotations
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT") // Spigot API
 
     // Plugin Dependencies
