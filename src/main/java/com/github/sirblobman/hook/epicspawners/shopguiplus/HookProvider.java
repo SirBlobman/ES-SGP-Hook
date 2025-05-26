@@ -9,10 +9,10 @@ import org.jetbrains.annotations.Nullable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
-import com.craftaro.epicspawners.api.EpicSpawnersApi;
-import com.craftaro.epicspawners.api.spawners.spawner.SpawnerData;
-import com.craftaro.epicspawners.api.spawners.spawner.SpawnerManager;
-import com.craftaro.epicspawners.api.spawners.spawner.SpawnerTier;
+import com.songoda.epicspawners.api.EpicSpawnersApi;
+import com.songoda.epicspawners.api.spawners.spawner.SpawnerData;
+import com.songoda.epicspawners.api.spawners.spawner.SpawnerManager;
+import com.songoda.epicspawners.api.spawners.spawner.SpawnerTier;
 import net.brcdev.shopgui.ShopGuiPlusApi;
 import net.brcdev.shopgui.exception.api.ExternalSpawnerProviderNameConflictException;
 import net.brcdev.shopgui.spawner.external.provider.ExternalSpawnerProvider;
