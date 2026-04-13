@@ -48,7 +48,7 @@ repositories {
 
 dependencies {
     // Java Dependencies
-    compileOnly("org.jetbrains:annotations:26.0.2") // JetBrains Annotations
+    compileOnly("org.jetbrains:annotations:26.1.0") // JetBrains Annotations
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT") // Spigot API
 
     // Plugin Dependencies
